@@ -405,7 +405,7 @@ Disassembly of section .text:
  8048bcc:	8b 45 f8             	mov    -0x8(%ebp),%eax
  8048bcf:	8b 54 85 e0          	mov    -0x20(%ebp,%eax,4),%edx
  8048bd3:	8b 45 f8             	mov    -0x8(%ebp),%eax
- 
+
  8048bd6:	83 c0 03             	add    $0x3,%eax
  8048bd9:	8b 44 85 e0          	mov    -0x20(%ebp,%eax,4),%eax
  8048bdd:	39 c2                	cmp    %eax,%edx
@@ -433,12 +433,16 @@ Disassembly of section .text:
  8048c06:	55                   	push   %ebp
  8048c07:	89 e5                	mov    %esp,%ebp
  8048c09:	83 ec 28             	sub    $0x28,%esp
+
  8048c0c:	c7 45 f8 00 00 00 00 	movl   $0x0,-0x8(%ebp)
  8048c13:	c7 45 fc 00 00 00 00 	movl   $0x0,-0x4(%ebp)
+
  8048c1a:	8d 45 f0             	lea    -0x10(%ebp),%eax
  8048c1d:	89 44 24 0c          	mov    %eax,0xc(%esp)
+
  8048c21:	8d 45 f4             	lea    -0xc(%ebp),%eax
  8048c24:	89 44 24 08          	mov    %eax,0x8(%esp)
+
  8048c28:	c7 44 24 04 79 99 04 	movl   $0x8049979,0x4(%esp)
  8048c2f:	08 
  8048c30:	8b 45 08             	mov    0x8(%ebp),%eax
@@ -447,14 +451,18 @@ Disassembly of section .text:
  8048c3b:	89 45 fc             	mov    %eax,-0x4(%ebp)
  8048c3e:	83 7d fc 01          	cmpl   $0x1,-0x4(%ebp)
  8048c42:	7f 05                	jg     8048c49 <phase_3+0x43>
+
  8048c44:	e8 0d 0a 00 00       	call   8049656 <explode_bomb>
+
  8048c49:	8b 45 f4             	mov    -0xc(%ebp),%eax
  8048c4c:	89 45 ec             	mov    %eax,-0x14(%ebp)
  8048c4f:	83 7d ec 07          	cmpl   $0x7,-0x14(%ebp)
  8048c53:	77 46                	ja     8048c9b <phase_3+0x95>
+ 
  8048c55:	8b 55 ec             	mov    -0x14(%ebp),%edx
  8048c58:	8b 04 95 80 99 04 08 	mov    0x8049980(,%edx,4),%eax
  8048c5f:	ff e0                	jmp    *%eax
+
  8048c61:	81 45 f8 b9 00 00 00 	addl   $0xb9,-0x8(%ebp)
  8048c68:	81 6d f8 bf 02 00 00 	subl   $0x2bf,-0x8(%ebp)
  8048c6f:	81 45 f8 01 03 00 00 	addl   $0x301,-0x8(%ebp)
@@ -464,14 +472,19 @@ Disassembly of section .text:
  8048c8b:	81 45 f8 aa 01 00 00 	addl   $0x1aa,-0x8(%ebp)
  8048c92:	81 6d f8 a6 00 00 00 	subl   $0xa6,-0x8(%ebp)
  8048c99:	eb 05                	jmp    8048ca0 <phase_3+0x9a>
+ 
  8048c9b:	e8 b6 09 00 00       	call   8049656 <explode_bomb>
+
  8048ca0:	8b 45 f4             	mov    -0xc(%ebp),%eax
  8048ca3:	83 f8 05             	cmp    $0x5,%eax
  8048ca6:	7f 08                	jg     8048cb0 <phase_3+0xaa>
+
  8048ca8:	8b 45 f0             	mov    -0x10(%ebp),%eax
  8048cab:	39 45 f8             	cmp    %eax,-0x8(%ebp)
  8048cae:	74 05                	je     8048cb5 <phase_3+0xaf>
+
  8048cb0:	e8 a1 09 00 00       	call   8049656 <explode_bomb>
+
  8048cb5:	c9                   	leave  
  8048cb6:	c3                   	ret    
 
