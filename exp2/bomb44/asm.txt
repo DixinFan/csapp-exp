@@ -680,7 +680,7 @@ Disassembly of section .text:
  8048e96:	75 ee                	jne    8048e86 <phase_6+0x38>
  8048e98:	8b 45 fc             	mov    -0x4(%ebp),%eax
  8048e9b:	8b 00                	mov    (%eax),%eax
- 
+
  8048e9d:	3b 45 f4             	cmp    -0xc(%ebp),%eax
  8048ea0:	74 05                	je     8048ea7 <phase_6+0x59>
  8048ea2:	e8 af 07 00 00       	call   8049656 <explode_bomb>
@@ -691,14 +691,18 @@ Disassembly of section .text:
  8048ea9:	55                   	push   %ebp
  8048eaa:	89 e5                	mov    %esp,%ebp
  8048eac:	83 ec 0c             	sub    $0xc,%esp
+
  8048eaf:	83 7d 08 00          	cmpl   $0x0,0x8(%ebp)
  8048eb3:	75 09                	jne    8048ebe <fun7+0x15>
+
  8048eb5:	c7 45 fc ff ff ff ff 	movl   $0xffffffff,-0x4(%ebp)
  8048ebc:	eb 54                	jmp    8048f12 <fun7+0x69>
+
  8048ebe:	8b 45 08             	mov    0x8(%ebp),%eax
  8048ec1:	8b 00                	mov    (%eax),%eax
  8048ec3:	3b 45 0c             	cmp    0xc(%ebp),%eax
  8048ec6:	7e 1c                	jle    8048ee4 <fun7+0x3b>
+
  8048ec8:	8b 45 08             	mov    0x8(%ebp),%eax
  8048ecb:	8b 50 04             	mov    0x4(%eax),%edx
  8048ece:	8b 45 0c             	mov    0xc(%ebp),%eax
@@ -708,12 +712,15 @@ Disassembly of section .text:
  8048edd:	01 c0                	add    %eax,%eax
  8048edf:	89 45 fc             	mov    %eax,-0x4(%ebp)
  8048ee2:	eb 2e                	jmp    8048f12 <fun7+0x69>
+
  8048ee4:	8b 45 08             	mov    0x8(%ebp),%eax
  8048ee7:	8b 00                	mov    (%eax),%eax
  8048ee9:	3b 45 0c             	cmp    0xc(%ebp),%eax
  8048eec:	75 09                	jne    8048ef7 <fun7+0x4e>
+
  8048eee:	c7 45 fc 00 00 00 00 	movl   $0x0,-0x4(%ebp)
  8048ef5:	eb 1b                	jmp    8048f12 <fun7+0x69>
+ 
  8048ef7:	8b 45 08             	mov    0x8(%ebp),%eax
  8048efa:	8b 50 08             	mov    0x8(%eax),%edx
  8048efd:	8b 45 0c             	mov    0xc(%ebp),%eax
@@ -723,6 +730,7 @@ Disassembly of section .text:
  8048f0c:	01 c0                	add    %eax,%eax
  8048f0e:	40                   	inc    %eax
  8048f0f:	89 45 fc             	mov    %eax,-0x4(%ebp)
+
  8048f12:	8b 45 fc             	mov    -0x4(%ebp),%eax
  8048f15:	c9                   	leave  
  8048f16:	c3                   	ret    
@@ -731,25 +739,33 @@ Disassembly of section .text:
  8048f17:	55                   	push   %ebp
  8048f18:	89 e5                	mov    %esp,%ebp
  8048f1a:	83 ec 18             	sub    $0x18,%esp
+
  8048f1d:	e8 a8 03 00 00       	call   80492ca <read_line>
  8048f22:	89 45 f4             	mov    %eax,-0xc(%ebp)
  8048f25:	8b 45 f4             	mov    -0xc(%ebp),%eax
  8048f28:	89 04 24             	mov    %eax,(%esp)
  8048f2b:	e8 28 f9 ff ff       	call   8048858 <atoi@plt>
+
  8048f30:	89 45 f8             	mov    %eax,-0x8(%ebp)
  8048f33:	83 7d f8 00          	cmpl   $0x0,-0x8(%ebp)
  8048f37:	7e 09                	jle    8048f42 <secret_phase+0x2b>
+
  8048f39:	81 7d f8 e9 03 00 00 	cmpl   $0x3e9,-0x8(%ebp)
  8048f40:	7e 05                	jle    8048f47 <secret_phase+0x30>
+
  8048f42:	e8 0f 07 00 00       	call   8049656 <explode_bomb>
+
  8048f47:	8b 45 f8             	mov    -0x8(%ebp),%eax
  8048f4a:	89 44 24 04          	mov    %eax,0x4(%esp)
  8048f4e:	c7 04 24 e4 a6 04 08 	movl   $0x804a6e4,(%esp)
  8048f55:	e8 4f ff ff ff       	call   8048ea9 <fun7>
+
  8048f5a:	89 45 fc             	mov    %eax,-0x4(%ebp)
  8048f5d:	83 7d fc 02          	cmpl   $0x2,-0x4(%ebp)
  8048f61:	74 05                	je     8048f68 <secret_phase+0x51>
+
  8048f63:	e8 ee 06 00 00       	call   8049656 <explode_bomb>
+
  8048f68:	c7 04 24 ac 99 04 08 	movl   $0x80499ac,(%esp)
  8048f6f:	e8 54 f8 ff ff       	call   80487c8 <puts@plt>
  8048f74:	e8 07 07 00 00       	call   8049680 <phase_defused>
@@ -1276,15 +1292,18 @@ Disassembly of section .text:
  8049681:	89 e5                	mov    %esp,%ebp
  8049683:	83 ec 78             	sub    $0x78,%esp
  8049686:	a1 4c a8 04 08       	mov    0x804a84c,%eax
+
  804968b:	83 f8 06             	cmp    $0x6,%eax
  804968e:	75 6e                	jne    80496fe <phase_defused+0x7e>
  8049690:	b8 50 a9 04 08       	mov    $0x804a950,%eax
+
  8049695:	89 c2                	mov    %eax,%edx
  8049697:	8d 45 ac             	lea    -0x54(%ebp),%eax
  804969a:	89 44 24 0c          	mov    %eax,0xc(%esp)
  804969e:	8d 45 a8             	lea    -0x58(%ebp),%eax
  80496a1:	89 44 24 08          	mov    %eax,0x8(%esp)
  80496a5:	c7 44 24 04 48 9e 04 	movl   $0x8049e48,0x4(%esp)
+
  80496ac:	08 
  80496ad:	89 14 24             	mov    %edx,(%esp)
  80496b0:	e8 b3 f1 ff ff       	call   8048868 <sscanf@plt>
@@ -1292,6 +1311,7 @@ Disassembly of section .text:
  80496b8:	83 7d fc 02          	cmpl   $0x2,-0x4(%ebp)
  80496bc:	75 34                	jne    80496f2 <phase_defused+0x72>
  80496be:	c7 44 24 04 4e 9e 04 	movl   $0x8049e4e,0x4(%esp)
+
  80496c5:	08 
  80496c6:	8d 45 ac             	lea    -0x54(%ebp),%eax
  80496c9:	89 04 24             	mov    %eax,(%esp)
@@ -1299,11 +1319,14 @@ Disassembly of section .text:
  80496d1:	85 c0                	test   %eax,%eax
  80496d3:	75 1d                	jne    80496f2 <phase_defused+0x72>
  80496d5:	c7 04 24 5c 9e 04 08 	movl   $0x8049e5c,(%esp)
+
  80496dc:	e8 e7 f0 ff ff       	call   80487c8 <puts@plt>
  80496e1:	c7 04 24 84 9e 04 08 	movl   $0x8049e84,(%esp)
+
  80496e8:	e8 db f0 ff ff       	call   80487c8 <puts@plt>
  80496ed:	e8 25 f8 ff ff       	call   8048f17 <secret_phase>
  80496f2:	c7 04 24 bc 9e 04 08 	movl   $0x8049ebc,(%esp)
+
  80496f9:	e8 ca f0 ff ff       	call   80487c8 <puts@plt>
  80496fe:	c9                   	leave  
  80496ff:	c3                   	ret    
