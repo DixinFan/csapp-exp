@@ -680,6 +680,7 @@ Disassembly of section .text:
  8048e96:	75 ee                	jne    8048e86 <phase_6+0x38>
  8048e98:	8b 45 fc             	mov    -0x4(%ebp),%eax
  8048e9b:	8b 00                	mov    (%eax),%eax
+ 
  8048e9d:	3b 45 f4             	cmp    -0xc(%ebp),%eax
  8048ea0:	74 05                	je     8048ea7 <phase_6+0x59>
  8048ea2:	e8 af 07 00 00       	call   8049656 <explode_bomb>
