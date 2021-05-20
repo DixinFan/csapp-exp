@@ -375,7 +375,7 @@ Disassembly of section .text:
  8048b8d:	08 
  8048b8e:	8b 45 08             	mov    0x8(%ebp),%eax
  8048b91:	89 04 24             	mov    %eax,(%esp)
- 
+
  8048b94:	e8 f6 04 00 00       	call   804908f <strings_not_equal>
  8048b99:	85 c0                	test   %eax,%eax
  8048b9b:	74 05                	je     8048ba2 <phase_1+0x22>
@@ -389,31 +389,43 @@ Disassembly of section .text:
  8048ba4:	55                   	push   %ebp
  8048ba5:	89 e5                	mov    %esp,%ebp
  8048ba7:	83 ec 28             	sub    $0x28,%esp
+
  8048baa:	c7 45 fc 00 00 00 00 	movl   $0x0,-0x4(%ebp)
+
  8048bb1:	8d 45 e0             	lea    -0x20(%ebp),%eax
  8048bb4:	89 44 24 04          	mov    %eax,0x4(%esp)
+
  8048bb8:	8b 45 08             	mov    0x8(%ebp),%eax
  8048bbb:	89 04 24             	mov    %eax,(%esp)
+
  8048bbe:	e8 39 04 00 00       	call   8048ffc <read_six_numbers>
  8048bc3:	c7 45 f8 00 00 00 00 	movl   $0x0,-0x8(%ebp)
  8048bca:	eb 27                	jmp    8048bf3 <phase_2+0x4f>
+
  8048bcc:	8b 45 f8             	mov    -0x8(%ebp),%eax
  8048bcf:	8b 54 85 e0          	mov    -0x20(%ebp,%eax,4),%edx
  8048bd3:	8b 45 f8             	mov    -0x8(%ebp),%eax
+ 
  8048bd6:	83 c0 03             	add    $0x3,%eax
  8048bd9:	8b 44 85 e0          	mov    -0x20(%ebp,%eax,4),%eax
  8048bdd:	39 c2                	cmp    %eax,%edx
  8048bdf:	74 05                	je     8048be6 <phase_2+0x42>
+
  8048be1:	e8 70 0a 00 00       	call   8049656 <explode_bomb>
+
  8048be6:	8b 45 f8             	mov    -0x8(%ebp),%eax
  8048be9:	8b 44 85 e0          	mov    -0x20(%ebp,%eax,4),%eax
  8048bed:	01 45 fc             	add    %eax,-0x4(%ebp)
  8048bf0:	ff 45 f8             	incl   -0x8(%ebp)
+
  8048bf3:	83 7d f8 02          	cmpl   $0x2,-0x8(%ebp)
  8048bf7:	7e d3                	jle    8048bcc <phase_2+0x28>
+
  8048bf9:	83 7d fc 00          	cmpl   $0x0,-0x4(%ebp)
  8048bfd:	75 05                	jne    8048c04 <phase_2+0x60>
+
  8048bff:	e8 52 0a 00 00       	call   8049656 <explode_bomb>
+
  8048c04:	c9                   	leave  
  8048c05:	c3                   	ret    
 
