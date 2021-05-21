@@ -212,12 +212,9 @@ int negate(int x) {
  */
 int isAsciiDigit(int x) {
   // return 2;
-  int sign = 0x1<<31;
-  int upperBound = ~(sign|0x39);
-  int lowerBound = ~0x30;
-  upperBound = sign&(upperBound+x)>>31;
-  lowerBound = sign&(lowerBound+1+x)>>31;
-  return !(upperBound|lowerBound);
+  /* (x - 0x30 >= 0) && (0x39 - x) >=0 */
+  int TMIN = 1 << 31;
+  return !((x + ~0x30 + 1) & TMIN) & !((0x39 + ~x + 1) & TMIN);
 }
 /* 
  * conditional - same as x ? y : z 
@@ -311,13 +308,25 @@ int howManyBits(int x) {
  */
 unsigned floatScale2(unsigned uf) {
   // return 2;
-  int exp = (uf&0x7f800000)>>23;
-  int sign = uf&(1<<31);
-  if(exp==0) return uf<<1|sign;
-  if(exp==255) return uf;
-  exp++;
-  if(exp==255) return 0x7f800000|sign;
-  return (exp<<23)|(uf&0x807fffff);
+  int exp = (uf >> 23) & 0xFF;  // Get the exponent bits.
+  int sign = uf & (1 << 31);  // Most significant sign bit
+  if (exp == 0xFF) {  // If uf is NAN or Infinity, return uf
+    return uf;
+  }
+
+  if (exp == 0x0) { // If uf is denorm number,
+    return (uf << 1) | sign;  // Left shift by 1, and then add sign bit
+  }
+
+  // normal number
+  exp = exp + 1;  
+  if (exp == 0xFF) {  // if exp+1 is equal to 0xFF, return Infinity
+    return 0x7F800000 | sign;
+  }
+  else {  // exp+1 not equal to 0xFF, no overflow happens.
+    int frac = uf & 0x7FFFFF;  // get the fraction bits
+    return (frac | exp << 23) | sign;  // add frac, exp, sign together.
+  }
 }
 /* 
  * floatFloat2Int - Return bit-level equivalent of expression (int) f
@@ -332,21 +341,19 @@ unsigned floatScale2(unsigned uf) {
  *   Rating: 4
  */
 int floatFloat2Int(unsigned uf) {
-  // return 2;
-  int s_    = uf>>31;
-  int exp_  = ((uf&0x7f800000)>>23)-127;
-  int frac_ = (uf&0x007fffff)|0x00800000;
-  if(!(uf&0x7fffffff)) return 0;
+  int TMIN = 1 << 31;
+  int sign = uf >> 31;
+  int exp = ((uf >> 23) & 0xFF) - 127;
+  int frac = (uf & 0x007fffff) | 0x00800000;
+  int result = (exp > 23) ? (frac << (exp - 23)) : (frac >> (23 - exp));
 
-  if(exp_ > 31) return 0x80000000;
-  if(exp_ < 0) return 0;
+  // Out of range
+  if (exp > 31)
+    return TMIN;
+  if (exp < 0)
+    return 0;
 
-  if(exp_ > 23) frac_ <<= (exp_-23);
-  else frac_ >>= (23-exp_);
-
-  if(!((frac_>>31)^s_)) return frac_;
-  else if(frac_>>31) return 0x80000000;
-  else return ~frac_+1;
+  return (sign) ? -result : result;
 }
 /* 
  * floatPower2 - Return bit-level equivalent of the expression 2.0^x
