@@ -147,7 +147,6 @@ int main(int argc, char **argv)
     stats_t *mm_stats = NULL;  /* mm (i.e. student) stats for each trace */
     speed_t speed_params;      /* input parameters to the xx_speed routines */ 
 
-    int team_check = 1;  /* If set, check team structure (reset by -a) */
     int run_libc = 0;    /* If set, run libc malloc (set by -l) */
     int autograder = 0;  /* If set, emit summary info for autograder (-g) */
 
@@ -178,9 +177,6 @@ int main(int argc, char **argv)
 	    if (tracedir[strlen(tracedir)-1] != '/') 
 		strcat(tracedir, "/"); /* path always ends with "/" */
 	    break;
-        case 'a': /* Don't check team structure */
-            team_check = 0;
-            break;
         case 'l': /* Run libc malloc */
             run_libc = 1;
             break;
@@ -199,32 +195,6 @@ int main(int argc, char **argv)
         }
     }
 	
-    /* 
-     * Check and print team info 
-     */
-    if (team_check) {
-	/* Students must fill in their team information */
-	if (!strcmp(team.teamname, "")) {
-	    printf("ERROR: Please provide the information about your team in mm.c.\n");
-	    exit(1);
-	} else
-	    printf("Team Name:%s\n", team.teamname);
-	if ((*team.name1 == '\0') || (*team.id1 == '\0')) {
-	    printf("ERROR.  You must fill in all team member 1 fields!\n");
-	    exit(1);
-	} 
-	else
-	    printf("Member 1 :%s:%s\n", team.name1, team.id1);
-
-	if (((*team.name2 != '\0') && (*team.id2 == '\0')) ||
-	    ((*team.name2 == '\0') && (*team.id2 != '\0'))) { 
-	    printf("ERROR.  You must fill in all or none of the team member 2 ID fields!\n");
-	    exit(1);
-	}
-	else if (*team.name2 != '\0')
-	    printf("Member 2 :%s:%s\n", team.name2, team.id2);
-    }
-
     /* 
      * If no -f command line arg, then use the entire set of tracefiles 
      * defined in default_traces[]
@@ -435,12 +405,12 @@ static void remove_range(range_t **ranges, char *lo)
 {
     range_t *p;
     range_t **prevpp = ranges;
-    int size;
+    // int size;
 
     for (p = *ranges;  p != NULL; p = p->next) {
         if (p->lo == lo) {
 	    *prevpp = p->next;
-            size = p->hi - p->lo + 1;
+            // size = p->hi - p->lo + 1;
             free(p);
             break;
         }
@@ -495,11 +465,16 @@ static trace_t *read_trace(char *tracedir, char *filename)
 	sprintf(msg, "Could not open %s in read_trace", path);
 	unix_error(msg);
     }
-    fscanf(tracefile, "%d", &(trace->sugg_heapsize)); /* not used */
-    fscanf(tracefile, "%d", &(trace->num_ids));     
-    fscanf(tracefile, "%d", &(trace->num_ops));     
-    fscanf(tracefile, "%d", &(trace->weight));        /* not used */
-    
+
+    int n_inputs;
+    n_inputs = fscanf(tracefile, "%d", &(trace->sugg_heapsize)); /* not used */
+    n_inputs = fscanf(tracefile, "%d", &(trace->num_ids));     
+    n_inputs = fscanf(tracefile, "%d", &(trace->num_ops));     
+    n_inputs = fscanf(tracefile, "%d", &(trace->weight));        /* not used */
+    // Ignore n_inputs
+    // if(n_inputs != 1)
+    //     exit(EXIT_FAILURE);
+
     /* We'll store each request line in the trace in this array */
     if ((trace->ops = 
 	 (traceop_t *)malloc(trace->num_ops * sizeof(traceop_t))) == NULL)
@@ -521,21 +496,24 @@ static trace_t *read_trace(char *tracedir, char *filename)
     while (fscanf(tracefile, "%s", type) != EOF) {
 	switch(type[0]) {
 	case 'a':
-	    fscanf(tracefile, "%u %u", &index, &size);
+	    n_inputs = fscanf(tracefile, "%u %u", &index, &size);
+	    if(n_inputs != 2) fprintf(stderr, "option '%c' expect 2 more arguments", type[0]);
 	    trace->ops[op_index].type = ALLOC;
 	    trace->ops[op_index].index = index;
 	    trace->ops[op_index].size = size;
 	    max_index = (index > max_index) ? index : max_index;
 	    break;
 	case 'r':
-	    fscanf(tracefile, "%u %u", &index, &size);
+	    n_inputs = fscanf(tracefile, "%u %u", &index, &size);
+	    if(n_inputs != 2) fprintf(stderr, "option '%c' expect 2 more arguments", type[0]);
 	    trace->ops[op_index].type = REALLOC;
 	    trace->ops[op_index].index = index;
 	    trace->ops[op_index].size = size;
 	    max_index = (index > max_index) ? index : max_index;
 	    break;
 	case 'f':
-	    fscanf(tracefile, "%ud", &index);
+	    n_inputs = fscanf(tracefile, "%ud", &index);
+	    if(n_inputs != 1) fprintf(stderr, "option '%c' expect 1 more arguments", type[0]);
 	    trace->ops[op_index].type = FREE;
 	    trace->ops[op_index].index = index;
 	    break;
@@ -1006,7 +984,6 @@ static void usage(void)
 {
     fprintf(stderr, "Usage: mdriver [-hvVal] [-f <file>] [-t <dir>]\n");
     fprintf(stderr, "Options\n");
-    fprintf(stderr, "\t-a         Don't check the team structure.\n");
     fprintf(stderr, "\t-f <file>  Use <file> as the trace file.\n");
     fprintf(stderr, "\t-g         Generate summary info for autograder.\n");
     fprintf(stderr, "\t-h         Print this message.\n");
